@@ -685,7 +685,6 @@ jobs:
       - run: MODIN_BENCHMARK_MODE=True pytest modin/pandas/test/internals/test_benchmark_mode.py
       - run: pytest modin/experimental/xgboost/test/test_default.py
       # test_math_functions_fill_value appears to be broken on ray 1.3.0
-      - run: pytest modin/pandas/test/dataframe/test_binary.py -k 'math_functions_fill_value'
       - run: pytest modin/pandas/test/dataframe/test_default.py
       - run: pytest modin/pandas/test/dataframe/test_iter.py
       - run: pytest modin/pandas/test/dataframe/test_join_sort.py

@@ -481,13 +481,11 @@ def pytest_sessionstart(session):
                 "ray",
                 "start",
                 "--head",
-                "--num-cpus",
-                "2",
                 "--ray-client-server-port",
                 port,
             ]
         )
-        ray.util.connect(f"0.0.0.0:{port}")
+        ray.util.connect(f"localhost:{port}")
 
 
 def pytest_sessionfinish(session):

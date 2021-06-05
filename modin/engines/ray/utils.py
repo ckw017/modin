@@ -212,7 +212,7 @@ def initialize_ray(
             from packaging import version
 
             # setting of `_lru_evict` parameter raises DeprecationWarning since ray 2.0.0.dev0
-            if version.parse(ray.__version__) >= version.parse("2.0.0.dev0"):
+            if version.parse(ray.__version__) >= version.parse("1.3.0"):
                 ray_init_kwargs.pop("_lru_evict")
             ray.init(**ray_init_kwargs)
 
@@ -220,8 +220,6 @@ def initialize_ray(
         ray.worker.global_worker.run_function_on_all_workers(
             _move_stdlib_ahead_of_site_packages
         )
-
-        ray.worker.global_worker.run_function_on_all_workers(_import_pandas)
 
         if Backend.get() == "Cudf":
             from modin.engines.ray.cudf_on_ray.frame.gpu_manager import GPUManager
@@ -234,6 +232,7 @@ def initialize_ray(
                 for i in range(GpuCount.get()):
                     GPU_MANAGERS.append(GPUManager.remote(i))
 
+    ray.worker.global_worker.run_function_on_all_workers(_import_pandas)
     num_cpus = int(ray.cluster_resources()["CPU"])
     num_gpus = int(ray.cluster_resources().get("GPU", 0))
     if Backend.get() == "Cudf":

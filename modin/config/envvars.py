@@ -66,7 +66,7 @@ class Engine(EnvironmentVariable, type=str):
         except ImportError:
             pass
         else:
-            if version.parse(ray.__version__) < version.parse("1.0.0"):
+            if version.parse(ray.__version__) < version.parse("1.4.0"):
                 raise ImportError(
                     "Please `pip install modin[ray]` to install compatible Ray version."
                 )
@@ -189,22 +189,6 @@ class NPartitions(EnvironmentVariable, type=int):
             return CpuCount.get()
 
 
-class RayPlasmaDir(EnvironmentVariable, type=ExactStr):
-    """
-    Path to Plasma storage for Ray
-    """
-
-    varname = "MODIN_ON_RAY_PLASMA_DIR"
-
-
-class IsOutOfCore(EnvironmentVariable, type=bool):
-    """
-    Changes primary location of the DataFrame to disk, allowing one to exceed total system memory
-    """
-
-    varname = "MODIN_OUT_OF_CORE"
-
-
 class SocksProxy(EnvironmentVariable, type=ExactStr):
     """
     SOCKS proxy address if it is needed for SSH to work
@@ -253,6 +237,16 @@ class TestDatasetSize(EnvironmentVariable, type=str):
 
     varname = "MODIN_TEST_DATASET_SIZE"
     choices = ("Small", "Normal", "Big")
+
+
+class TestRayClient(EnvironmentVariable, type=bool):
+    """
+    Set to true to start and connect ray client before a testing session
+    starts.
+    """
+
+    varname = "MODIN_TEST_RAY_CLIENT"
+    default = False
 
 
 class TrackFileLeaks(EnvironmentVariable, type=bool):
